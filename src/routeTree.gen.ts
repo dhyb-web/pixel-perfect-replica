@@ -10,33 +10,44 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicMediaBucketSplatRouteImport } from './routes/api/public/media.$bucket.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMediaBucketSplatRoute =
+  ApiPublicMediaBucketSplatRouteImport.update({
+    id: '/api/public/media/$bucket/$',
+    path: '/api/public/media/$bucket/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/public/media/$bucket/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/public/media/$bucket/$'
+  id: '__root__' | '/' | '/api/public/media/$bucket/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicMediaBucketSplatRoute: typeof ApiPublicMediaBucketSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +59,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/media/$bucket/$': {
+      id: '/api/public/media/$bucket/$'
+      path: '/api/public/media/$bucket/$'
+      fullPath: '/api/public/media/$bucket/$'
+      preLoaderRoute: typeof ApiPublicMediaBucketSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicMediaBucketSplatRoute: ApiPublicMediaBucketSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
