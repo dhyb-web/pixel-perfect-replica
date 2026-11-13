@@ -10,6 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as InscriptionRouteImport } from './routes/inscription'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ActualitesIndexRouteImport } from './routes/actualites.index'
+import { Route as ActualitesSlugRouteImport } from './routes/actualites.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminNouveauRouteImport } from './routes/_authenticated/admin.nouveau'
+import { Route as AuthenticatedAdminModifierIdRouteImport } from './routes/_authenticated/admin.modifier.$id'
 import { Route as ApiPublicMediaBucketSplatRouteImport } from './routes/api/public/media.$bucket.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -17,6 +26,52 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ActualitesIndexRoute = ActualitesIndexRouteImport.update({
+  id: '/actualites/',
+  path: '/actualites/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActualitesSlugRoute = ActualitesSlugRouteImport.update({
+  id: '/actualites/$slug',
+  path: '/actualites/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminNouveauRoute =
+  AuthenticatedAdminNouveauRouteImport.update({
+    id: '/nouveau',
+    path: '/nouveau',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminModifierIdRoute =
+  AuthenticatedAdminModifierIdRouteImport.update({
+    id: '/modifier/$id',
+    path: '/modifier/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const ApiPublicMediaBucketSplatRoute =
   ApiPublicMediaBucketSplatRouteImport.update({
     id: '/api/public/media/$bucket/$',
@@ -26,27 +81,87 @@ const ApiPublicMediaBucketSplatRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/actualites/$slug': typeof ActualitesSlugRoute
+  '/actualites/': typeof ActualitesIndexRoute
+  '/admin/nouveau': typeof AuthenticatedAdminNouveauRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/modifier/$id': typeof AuthenticatedAdminModifierIdRoute
   '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/actualites/$slug': typeof ActualitesSlugRoute
+  '/actualites': typeof ActualitesIndexRoute
+  '/admin/nouveau': typeof AuthenticatedAdminNouveauRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/modifier/$id': typeof AuthenticatedAdminModifierIdRoute
   '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/actualites/$slug': typeof ActualitesSlugRoute
+  '/actualites/': typeof ActualitesIndexRoute
+  '/_authenticated/admin/nouveau': typeof AuthenticatedAdminNouveauRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/modifier/$id': typeof AuthenticatedAdminModifierIdRoute
   '/api/public/media/$bucket/$': typeof ApiPublicMediaBucketSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/media/$bucket/$'
+  fullPaths:
+    | '/'
+    | '/connexion'
+    | '/inscription'
+    | '/admin'
+    | '/actualites/$slug'
+    | '/actualites/'
+    | '/admin/nouveau'
+    | '/admin/'
+    | '/admin/modifier/$id'
+    | '/api/public/media/$bucket/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/media/$bucket/$'
-  id: '__root__' | '/' | '/api/public/media/$bucket/$'
+  to:
+    | '/'
+    | '/connexion'
+    | '/inscription'
+    | '/actualites/$slug'
+    | '/actualites'
+    | '/admin/nouveau'
+    | '/admin'
+    | '/admin/modifier/$id'
+    | '/api/public/media/$bucket/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/connexion'
+    | '/inscription'
+    | '/_authenticated/admin'
+    | '/actualites/$slug'
+    | '/actualites/'
+    | '/_authenticated/admin/nouveau'
+    | '/_authenticated/admin/'
+    | '/_authenticated/admin/modifier/$id'
+    | '/api/public/media/$bucket/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ConnexionRoute: typeof ConnexionRoute
+  InscriptionRoute: typeof InscriptionRoute
+  ActualitesSlugRoute: typeof ActualitesSlugRoute
+  ActualitesIndexRoute: typeof ActualitesIndexRoute
   ApiPublicMediaBucketSplatRoute: typeof ApiPublicMediaBucketSplatRoute
 }
 
@@ -59,6 +174,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/actualites/': {
+      id: '/actualites/'
+      path: '/actualites'
+      fullPath: '/actualites/'
+      preLoaderRoute: typeof ActualitesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/actualites/$slug': {
+      id: '/actualites/$slug'
+      path: '/actualites/$slug'
+      fullPath: '/actualites/$slug'
+      preLoaderRoute: typeof ActualitesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/nouveau': {
+      id: '/_authenticated/admin/nouveau'
+      path: '/nouveau'
+      fullPath: '/admin/nouveau'
+      preLoaderRoute: typeof AuthenticatedAdminNouveauRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/modifier/$id': {
+      id: '/_authenticated/admin/modifier/$id'
+      path: '/modifier/$id'
+      fullPath: '/admin/modifier/$id'
+      preLoaderRoute: typeof AuthenticatedAdminModifierIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/api/public/media/$bucket/$': {
       id: '/api/public/media/$bucket/$'
       path: '/api/public/media/$bucket/$'
@@ -69,8 +247,39 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminNouveauRoute: typeof AuthenticatedAdminNouveauRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminModifierIdRoute: typeof AuthenticatedAdminModifierIdRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminNouveauRoute: AuthenticatedAdminNouveauRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminModifierIdRoute: AuthenticatedAdminModifierIdRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ConnexionRoute: ConnexionRoute,
+  InscriptionRoute: InscriptionRoute,
+  ActualitesSlugRoute: ActualitesSlugRoute,
+  ActualitesIndexRoute: ActualitesIndexRoute,
   ApiPublicMediaBucketSplatRoute: ApiPublicMediaBucketSplatRoute,
 }
 export const routeTree = rootRouteImport
