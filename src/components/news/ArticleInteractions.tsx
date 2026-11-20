@@ -124,16 +124,16 @@ export function ArticleInteractions({
   });
 
   function onLike() {
-    if (!user) return requireLogin();
+    if (!user) { requireLogin(); return; }
     toggleLike.mutate();
   }
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!user) return requireLogin();
+    if (!user) { requireLogin(); return; }
     const content = text.trim();
     if (!content) return;
-    if (content.length > 2000) return toast.error("2000 caractères maximum.");
+    if (content.length > 2000) { toast.error("2000 caractères maximum."); return; }
     addComment.mutate(content);
   }
 

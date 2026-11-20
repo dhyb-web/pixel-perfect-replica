@@ -11,8 +11,8 @@ import { Label } from "@/components/ui/label";
 import { safeRedirect } from "@/lib/redirect";
 
 export const Route = createFileRoute("/connexion")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => ({
-    redirect: safeRedirect(s.redirect),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined } => ({
+    redirect: safeRedirect(s["redirect"]),
   }),
   head: () => ({
     meta: [

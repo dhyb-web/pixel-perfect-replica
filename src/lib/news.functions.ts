@@ -28,7 +28,7 @@ const listInput = z.object({
 });
 
 export const listNews = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => listInput.parse(data ?? {}))
+  .validator((data: unknown) => listInput.parse(data ?? {}))
   .handler(async ({ data }): Promise<ArticleListItem[]> => {
     const db = createPublicClient();
     let query = db.from("articles").select(LIST_COLUMNS).eq("status", "published");
@@ -53,7 +53,7 @@ export const listNews = createServerFn({ method: "GET" })
   });
 
 export const getArticleBySlug = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
+  .validator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
   .handler(async ({ data }): Promise<{ article: ArticleDetail; similar: ArticleListItem[] } | null> => {
     const db = createPublicClient();
     const { data: row, error } = await db

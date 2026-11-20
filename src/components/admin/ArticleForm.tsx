@@ -64,7 +64,7 @@ export function ArticleForm({ initial }: { initial?: ArticleRow }) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Choisissez une image.");
+    if (!file.type.startsWith("image/")) { toast.error("Choisissez une image."); return; }
     setUploading("cover");
     try {
       setCover(await uploadFile("images", file));
@@ -96,7 +96,7 @@ export function ArticleForm({ initial }: { initial?: ArticleRow }) {
     e.target.value = "";
     if (!file) return;
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
-      return toast.error("Choisissez un fichier PDF.");
+      { toast.error("Choisissez un fichier PDF."); return; }
     }
     setUploading("pdf");
     try {
@@ -110,8 +110,8 @@ export function ArticleForm({ initial }: { initial?: ArticleRow }) {
   }
 
   async function save(status: Status) {
-    if (!title.trim()) return toast.error("Le titre est obligatoire.");
-    if (!content.trim()) return toast.error("Le texte de l'actualité est obligatoire.");
+    if (!title.trim()) { toast.error("Le titre est obligatoire."); return; }
+    if (!content.trim()) { toast.error("Le texte de l'actualité est obligatoire."); return; }
     setSaving(status);
     const { data: auth } = await supabase.auth.getUser();
     const payload = {

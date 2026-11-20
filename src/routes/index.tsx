@@ -39,7 +39,7 @@ function UrgentStrip({ items }: { items: ArticleListItem[] }) {
         <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-md bg-urgent px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider text-urgent-foreground animate-urgent">
           <Siren className="size-3.5" aria-hidden /> Urgent
         </span>
-        <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:gap-6">
+        <div className="flex min-w-0 max-w-full flex-col gap-1 sm:flex-row sm:gap-6">
           {items.map((a) => (
             <Link
               key={a.id}
@@ -108,11 +108,11 @@ function HomePage() {
       <UrgentStrip items={data.urgent} />
       <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
         {data.featured ? (
-          <section className="grid gap-8 lg:grid-cols-3" aria-label="À la une">
-            <div className="lg:col-span-2">
+          <section className="grid grid-cols-1 gap-8 lg:grid-cols-3" aria-label="À la une">
+            <div className="min-w-0 lg:col-span-2">
               <Featured article={data.featured} />
             </div>
-            <aside className="rounded-3xl border bg-card p-5 shadow-card">
+            <aside className="min-w-0 rounded-3xl border bg-card p-5 shadow-card">
               <h2 className="flex items-center gap-2 text-lg font-bold text-primary">
                 <span className="h-5 w-1 rounded-full bg-accent" /> Dernières infos
               </h2>

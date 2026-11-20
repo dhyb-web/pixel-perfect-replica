@@ -11,9 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils";
 
 interface NewsSearch {
-  q?: string;
-  categorie?: string;
-  faculte?: string;
+  q?: string | undefined;
+  categorie?: string | undefined;
+  faculte?: string | undefined;
 }
 
 const str = (v: unknown, max: number) =>
@@ -21,9 +21,9 @@ const str = (v: unknown, max: number) =>
 
 export const Route = createFileRoute("/actualites/")({
   validateSearch: (search: Record<string, unknown>): NewsSearch => ({
-    q: str(search.q, 100),
-    categorie: str(search.categorie, 60),
-    faculte: str(search.faculte, 20),
+    q: str(search["q"], 100),
+    categorie: str(search["categorie"], 60),
+    faculte: str(search["faculte"], 20),
   }),
   loaderDeps: ({ search }) => search,
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(newsListQuery(deps)),

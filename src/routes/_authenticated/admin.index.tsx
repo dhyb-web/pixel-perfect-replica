@@ -36,7 +36,7 @@ function AdminDashboard() {
     if (!toDelete) return;
     const { error } = await supabase.from("articles").delete().eq("id", toDelete.id);
     setToDelete(null);
-    if (error) return toast.error("Suppression impossible.");
+    if (error) { toast.error("Suppression impossible."); return; }
     toast.success("Actualité supprimée.");
     queryClient.invalidateQueries({ queryKey: ["admin"] });
     queryClient.invalidateQueries({ queryKey: ["news"] });

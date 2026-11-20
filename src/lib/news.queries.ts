@@ -5,9 +5,9 @@ export const homeNewsQuery = () =>
   queryOptions({ queryKey: ["news", "home"], queryFn: () => getHomeNews() });
 
 export interface NewsFilters {
-  q?: string;
-  categorie?: string;
-  faculte?: string;
+  q?: string | undefined;
+  categorie?: string | undefined;
+  faculte?: string | undefined;
 }
 
 export const newsListQuery = (filters: NewsFilters) =>
