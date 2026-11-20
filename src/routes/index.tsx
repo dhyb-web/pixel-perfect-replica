@@ -45,7 +45,7 @@ function UrgentStrip({ items }: { items: ArticleListItem[] }) {
               key={a.id}
               to="/actualites/$slug"
               params={{ slug: a.slug }}
-              className="truncate text-sm font-semibold text-urgent hover:underline"
+              className="line-clamp-2 text-sm font-semibold text-urgent hover:underline sm:truncate"
             >
               {a.title}
             </Link>
@@ -63,7 +63,7 @@ function Featured({ article }: { article: ArticleListItem }) {
       params={{ slug: article.slug }}
       className="group relative block overflow-hidden rounded-3xl shadow-card-hover"
     >
-      <div className="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[16/11]">
+      <div className="aspect-[16/10] lg:aspect-[16/11]">
         <ArticleCover
           src={article.cover_image_url}
           alt={article.title}
@@ -71,19 +71,19 @@ function Featured({ article }: { article: ArticleListItem }) {
           className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="absolute inset-0 bg-hero-overlay" />
-      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+      <div className="absolute inset-0 hidden bg-hero-overlay sm:block" />
+      <div className="relative bg-primary p-5 sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent sm:p-10">
         <div className="flex flex-wrap items-center gap-2">
           <NewsBadge badge={article.badge === "normal" ? "une" : article.badge} size="md" />
           {article.category && <CategoryTag name={article.category.name} className="text-gold" />}
         </div>
-        <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-[1.1] text-primary-foreground sm:text-5xl">
+        <h1 className="mt-3 max-w-3xl text-2xl font-extrabold leading-[1.15] text-primary-foreground sm:mt-4 sm:text-5xl sm:leading-[1.1]">
           {article.title}
         </h1>
-        <p className="mt-4 line-clamp-3 max-w-2xl text-base leading-relaxed text-primary-foreground/85 sm:text-lg">
+        <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-relaxed text-primary-foreground/85 sm:mt-4 sm:line-clamp-3 sm:text-lg">
           {article.excerpt}
         </p>
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-primary-foreground/80">
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-primary-foreground/80 sm:mt-6 sm:text-sm">
           <span className="font-semibold text-primary-foreground">{article.author_name}</span>
           <time dateTime={article.published_at}>{formatDate(article.published_at)}</time>
           <ArticleStats
@@ -106,13 +106,13 @@ function HomePage() {
   return (
     <>
       <UrgentStrip items={data.urgent} />
-      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 sm:pt-8">
         {data.featured ? (
           <section className="grid grid-cols-1 gap-8 lg:grid-cols-3" aria-label="À la une">
             <div className="min-w-0 lg:col-span-2">
               <Featured article={data.featured} />
             </div>
-            <aside className="min-w-0 rounded-3xl border bg-card p-5 shadow-card">
+            <aside className="hidden min-w-0 rounded-3xl border bg-card p-5 shadow-card lg:block">
               <h2 className="flex items-center gap-2 text-lg font-bold text-primary">
                 <span className="h-5 w-1 rounded-full bg-accent" /> Dernières infos
               </h2>
@@ -133,9 +133,9 @@ function HomePage() {
         )}
 
         {grid.length > 0 && (
-          <section className="mt-14" aria-labelledby="latest-title">
+          <section className="mt-10 sm:mt-14" aria-labelledby="latest-title">
             <div className="flex items-end justify-between gap-4 border-b pb-3">
-              <h2 id="latest-title" className="text-3xl font-extrabold text-primary">
+              <h2 id="latest-title" className="text-2xl font-extrabold text-primary sm:text-3xl">
                 Actualités
               </h2>
               <Link to="/actualites" className="text-sm font-semibold text-accent hover:underline">

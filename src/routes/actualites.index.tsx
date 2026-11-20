@@ -66,12 +66,12 @@ function NewsListPage() {
   const hasFilters = !!(search.q || search.categorie || search.faculte);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 sm:pt-10">
       <p className="text-xs font-bold uppercase tracking-widest text-accent">Actualités</p>
-      <h1 className="mt-1 text-4xl font-extrabold text-primary sm:text-5xl">{title}</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-primary sm:text-5xl">{title}</h1>
       {faculty && category && <p className="mt-2 text-muted-foreground">{faculty.name}</p>}
 
-      <div className="mt-8 rounded-2xl border bg-card p-4 shadow-card sm:p-5">
+      <div className="mt-5 rounded-2xl border bg-card p-3 shadow-card sm:mt-8 sm:p-5">
         <form onSubmit={submit} className="flex flex-col gap-3 md:flex-row" role="search">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />

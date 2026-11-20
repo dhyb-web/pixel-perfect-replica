@@ -170,8 +170,12 @@
 
 @utility article-body {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
-  line-height: 1.8;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  @media (min-width: 640px) {
+    font-size: 1.15rem;
+    line-height: 1.8;
+  }
   & p + p {
     margin-top: 1.25em;
   }

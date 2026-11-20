@@ -129,7 +129,7 @@ function ArticlePage() {
 
   return (
     <article className="pb-4">
-      <header className="mx-auto max-w-4xl px-4 pt-10 sm:px-6">
+      <header className="mx-auto max-w-4xl px-4 pt-6 sm:px-6 sm:pt-10">
         <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <Link to="/" className="hover:text-primary">Accueil</Link>
           <span>/</span>
@@ -155,9 +155,9 @@ function ArticlePage() {
             </Link>
           )}
         </div>
-        <h1 className="mt-4 text-4xl font-extrabold leading-[1.1] text-primary sm:text-5xl">{article.title}</h1>
+        <h1 className="mt-4 text-3xl font-extrabold leading-[1.15] text-primary sm:text-5xl sm:leading-[1.1]">{article.title}</h1>
         {article.excerpt && (
-          <p className="mt-5 text-xl leading-relaxed text-muted-foreground">{article.excerpt}</p>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:mt-5 sm:text-xl">{article.excerpt}</p>
         )}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-y py-4">
           <div className="flex items-center gap-3">
@@ -175,8 +175,8 @@ function ArticlePage() {
         </div>
       </header>
 
-      <div className="mx-auto mt-8 max-w-5xl px-4 sm:px-6">
-        <div className="overflow-hidden rounded-3xl shadow-card-hover">
+      <div className="mx-auto mt-6 max-w-5xl px-4 sm:mt-8 sm:px-6">
+        <div className="overflow-hidden rounded-2xl shadow-card-hover sm:rounded-3xl">
           <ArticleCover src={article.cover_image_url} alt={article.title} eager className="aspect-[16/9] w-full" />
         </div>
       </div>
@@ -217,7 +217,7 @@ function ArticlePage() {
 
       {similar.length > 0 && (
         <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6" aria-labelledby="similar-title">
-          <h2 id="similar-title" className="border-b pb-3 text-3xl font-extrabold text-primary">
+          <h2 id="similar-title" className="border-b pb-3 text-2xl font-extrabold text-primary sm:text-3xl">
             À lire aussi
           </h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { LayoutDashboard, LogOut, Search, User, X } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Search, X } from "lucide-react";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,17 +42,89 @@ function SearchForm({ onDone, autoFocus }: { onDone?: () => void; autoFocus?: bo
   );
 }
 
-function UserMenu() {
-  const { user, profile, isAdmin } = useAuth();
+function useSignOut() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
-  async function signOut() {
+  return async function signOut() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
     navigate({ to: "/connexion", search: { redirect: undefined }, replace: true });
-  }
+  };
+}
+
+function MobileMenu() {
+  const { user, profile, isAdmin } = useAuth();
+  const signOut = useSignOut();
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="onDark" size="icon" className="rounded-full md:hidden" aria-label="Ouvrir le menu">
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="flex w-[85vw] max-w-sm flex-col gap-0 overflow-y-auto p-0 [&>button]:text-primary-foreground [&>button]:opacity-90">
+        <SheetHeader className="bg-primary p-5 text-left">
+          <SheetTitle className="font-serif-display text-xl text-primary-foreground">
+            UK <span className="text-accent">ACTU</span>
+          </SheetTitle>
+          {user ? (
+            <p className="truncate text-sm text-primary-foreground/75">{displayName(profile, user)}</p>
+          ) : (
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <SheetClose asChild>
+                <Button asChild variant="onDark" className="h-11 rounded-full">
+                  <Link to="/connexion" search={{ redirect: undefined }}>Connexion</Link>
+                </Button>
+              </SheetClose>
+              <SheetClose asChild>
+                <Button asChild variant="accent" className="h-11 rounded-full">
+                  <Link to="/inscription" search={{ redirect: undefined }}>Inscription</Link>
+                </Button>
+              </SheetClose>
+            </div>
+          )}
+        </SheetHeader>
+        <nav aria-label="Rubriques" className="flex flex-col p-3">
+          <p className="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">Rubriques</p>
+          <SheetClose asChild>
+            <Link to="/" className="rounded-lg px-3 py-3 text-base font-semibold text-foreground hover:bg-secondary">Accueil</Link>
+          </SheetClose>
+          <SheetClose asChild>
+            <Link to="/actualites" search={{}} className="rounded-lg px-3 py-3 text-base font-semibold text-foreground hover:bg-secondary">Toutes les actualités</Link>
+          </SheetClose>
+          {CATEGORIES.map((c) => (
+            <SheetClose asChild key={c.slug}>
+              <Link to="/actualites" search={{ categorie: c.slug }} className="rounded-lg px-3 py-3 text-base font-semibold text-foreground hover:bg-secondary">
+                {c.name}
+              </Link>
+            </SheetClose>
+          ))}
+        </nav>
+        {user && (
+          <div className="mt-auto flex flex-col gap-2 border-t p-4">
+            {isAdmin && (
+              <SheetClose asChild>
+                <Button asChild variant="outline" className="h-11 justify-start">
+                  <Link to="/admin"><LayoutDashboard /> Tableau de bord admin</Link>
+                </Button>
+              </SheetClose>
+            )}
+            <SheetClose asChild>
+              <Button variant="ghost" className="h-11 justify-start" onClick={signOut}>
+                <LogOut /> Déconnexion
+              </Button>
+            </SheetClose>
+          </div>
+        )}
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function UserMenu() {
+  const { user, profile, isAdmin } = useAuth();
+  const signOut = useSignOut();
 
   const name = displayName(profile, user);
   return (
@@ -97,12 +170,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 shadow-card">
       <div className="h-1 bg-brand-gradient" />
       <div className="bg-primary">
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
-          <Logo />
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:gap-4 sm:px-6">
+          <Logo className="min-w-0" />
           <div className="mx-auto hidden w-full max-w-md md:block">
             <SearchForm />
           </div>
-          <div className="ml-auto flex items-center gap-2 md:ml-0">
+          <div className="ml-auto flex shrink-0 items-center gap-2 md:ml-0">
             <Button
               variant="onDark"
               size="icon"
@@ -113,22 +186,22 @@ export function SiteHeader() {
               {mobileSearch ? <X /> : <Search />}
             </Button>
             {!ready ? (
-              <div className="h-10 w-24" aria-hidden />
+              <div className="hidden h-10 w-24 md:block" aria-hidden />
             ) : user ? (
-              <UserMenu />
+              <div className="hidden md:block">
+                <UserMenu />
+              </div>
             ) : (
-              <>
-                <Button asChild variant="onDark" size="sm" className="h-10 rounded-full">
-                  <Link to="/connexion" search={{ redirect: undefined }}>
-                    <User className="sm:hidden" />
-                    <span className="hidden sm:inline">Connexion</span>
-                  </Link>
+              <div className="hidden items-center gap-2 md:flex">
+                <Button asChild variant="onDark" size="sm" className="h-10 rounded-full px-4">
+                  <Link to="/connexion" search={{ redirect: undefined }}>Connexion</Link>
                 </Button>
                 <Button asChild variant="accent" size="sm" className="h-10 rounded-full px-4">
                   <Link to="/inscription" search={{ redirect: undefined }}>Inscription</Link>
                 </Button>
-              </>
+              </div>
             )}
+            <MobileMenu />
           </div>
         </div>
         {mobileSearch && (
@@ -137,7 +210,7 @@ export function SiteHeader() {
           </div>
         )}
       </div>
-      <nav aria-label="Catégories" className="border-b bg-background">
+      <nav aria-label="Catégories" className="relative border-b bg-background">
         <div className="no-scrollbar mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 sm:px-6">
           <NavItem active={isHome} to="/">Accueil</NavItem>
           <CatLink active={location.pathname === "/actualites" && !activeCat}>Toutes</CatLink>
@@ -147,6 +220,7 @@ export function SiteHeader() {
             </CatLink>
           ))}
         </div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-background to-transparent md:hidden" aria-hidden />
       </nav>
     </header>
   );
